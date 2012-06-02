@@ -123,8 +123,8 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 			
 			// Draw the plane
-			canvas.drawRect(planeX - UNIT_WIDTH, canvasheight - planeY + UNIT_HEIGHT,
-											planeX, canvasheight - planeY, planepaint);
+			canvas.drawRect(planeX - UNIT_WIDTH, canvasheight - planeY + UNIT_HEIGHT - 1,
+											planeX, canvasheight - planeY - 1, planepaint);
 			
 			if(bombY > 0) {
 				// Draw the bomb
