@@ -32,16 +32,12 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		};
 		
 		int UNITS_HORIZONTAL = 10;
-		int UNITS_VERTICAL = 17;
-		
-		// Size of one unit
-		int UNIT_HEIGHT = 10;
-		int UNIT_WIDTH = 30;
+		int UNITS_VERTICAL = 18;
 		
 		// Size of bomb
 		int BOMB_RADIUS = 5;
 		
-		int PLANE_START_HEIGHT = 17 * UNIT_HEIGHT;
+		int PLANE_START_HEIGHT = 17;
 		
 		SurfaceHolder holder;
 		Context context;
@@ -54,10 +50,14 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		int canvaswidth;
 		int canvasheight;
 		
+		// Size of one unit
+		int unitheight;
+		int unitwidth;
+		
 		int score;
 		int level;
 		int bombX, bombY, bombgravity;
-		int planeX, planeY, velocity, planegravity;
+		int planeX, planeY, velocity, planegravity, planestart;
 		int[] towers;
 		
 		public BomberThread(SurfaceHolder hold, Context c) {
@@ -89,6 +89,9 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 			synchronized(holder) {
 				canvasheight = height;
 				canvaswidth = width;
+				unitwidth = width / UNITS_HORIZONTAL;
+				unitheight = height / UNITS_VERTICAL;
+				planestart = PLANE_START_HEIGHT * unitheight;
 			}
 		}
 		
@@ -104,12 +107,12 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 			synchronized(holder) {
 				level = lvl;
 				bombY = 0;
-				planeY = PLANE_START_HEIGHT;
+				planeY = planestart;
 				planeX = 0;
 				towers = (int[]) levels[lvl].clone();
-				bombgravity = 5;
-				velocity = (lvl + 1) * 5;
-				planegravity = (lvl + 1) * UNIT_HEIGHT;
+				bombgravity = 2;
+				velocity = 2;
+				planegravity = unitheight;
 			}
 		}
 		
@@ -118,12 +121,12 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 			
 			// Draw the towers
 			for(int i = 0; i < towers.length; i++) {
-				canvas.drawRect(i * UNIT_WIDTH, canvasheight - towers[i] * UNIT_HEIGHT,
-												(i + 1) * UNIT_WIDTH, canvasheight, towerpaint);
+				canvas.drawRect(i * unitwidth, canvasheight - towers[i] * unitheight,
+												(i + 1) * unitwidth, canvasheight, towerpaint);
 			}
 			
 			// Draw the plane
-			canvas.drawRect(planeX - UNIT_WIDTH, canvasheight - planeY + UNIT_HEIGHT - 1,
+			canvas.drawRect(planeX - unitwidth, canvasheight - planeY + unitheight - 1,
 											planeX, canvasheight - planeY - 1, planepaint);
 			
 			if(bombY > 0) {
@@ -133,7 +136,7 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 			
 			canvas.drawText("Score: " + score, (float) 0, (float) canvasheight, textpaint);
-			canvas.drawText("Level: " + (level + 1), (float) 0, (float) canvasheight - UNIT_HEIGHT, textpaint);
+			canvas.drawText("Level: " + (level + 1), (float) 0, (float) canvasheight - unitheight, textpaint);
 		}
 		
 		public void update() {
@@ -141,8 +144,8 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 			synchronized(holder) {
 				if(bombY != 0) {
 					bombY -= bombgravity;
-					if(towers[(int) bombX / UNIT_WIDTH] * UNIT_HEIGHT >= bombY) {
-						towers[(int) bombX / UNIT_WIDTH]--;
+					if(towers[(int) bombX / unitwidth] * unitheight >= bombY || bombY >= canvasheight) {
+						towers[(int) bombX / unitwidth]--;
 						
 						score++;
 						bombY = 0;
@@ -150,23 +153,23 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 				}
 				
 				planeX += velocity;
-				if(planeX > UNIT_WIDTH * UNITS_HORIZONTAL) {
+				if(planeX >= canvaswidth) {
 					planeX = 0;
 					planeY -= planegravity;
 				}
 				
-				if(towers[(int) planeX / UNIT_WIDTH] * UNIT_HEIGHT >= planeY) {
+				if(towers[(int) planeX / unitwidth] * unitheight >= planeY) {
 					gameover();
 				}
-			}
-			
-			for(int i = 0; i < towers.length; i++) {
-				if(towers[i] != 0) {
-					return;
+				
+				for(int i = 0; i < towers.length; i++) {
+					if(towers[i] > 0) {
+						return;
+					}
 				}
+				
+				initlevel(level + 1);
 			}
-			
-			initlevel(level + 1);
 		}
 		
 		public void gameover() {
@@ -178,7 +181,7 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		public boolean onTouch(View v, MotionEvent event) {
 			// If the bomb is available, drop it
 			if(bombY == 0) {
-				bombY = planeY - UNIT_HEIGHT;
+				bombY = planeY - unitheight;
 				bombX = planeX;
 			}
 			
