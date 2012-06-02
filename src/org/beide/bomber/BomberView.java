@@ -27,7 +27,7 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		
 		int[][] levels = {
 			{0,1,2,3,4,5,4,3,2,1},
-			{5,5,5,5,5,5,5,4,5,5}
+			{5,5,5,5,5,5,5,4,5,5},
 			{9,8,7,6,5,4,3,2,1,0}
 		};
 		
