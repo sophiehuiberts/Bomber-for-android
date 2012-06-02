@@ -38,8 +38,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	boolean running = true;
 	boolean paused;
 	
-	int canvaswidth;
-	int canvasheight;
+	int canvaswidth = 500;
+	int canvasheight = 500;
 	
 	// Size of one unit
 	int unitheight;
@@ -100,8 +100,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			planeY = planestart;
 			planeX = 0;
 			towers = (int[]) levels[lvl].clone();
-			bombgravity = 1000 / canvaswidth;
-			velocity = 1000 / canvaswidth;
+			bombgravity = canvasheight / 300;
+			velocity = canvaswidth / 200;
 			planegravity = unitheight;
 		}
 	}
