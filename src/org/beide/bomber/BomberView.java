@@ -182,7 +182,7 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 			// If the bomb is available, drop it
 			if(bombY == 0) {
 				bombY = planeY - unitheight;
-				bombX = planeX;
+				bombX = planeX - (planeX % unitwidth) + unitwidth / 2;
 			}
 			
 			return true;
