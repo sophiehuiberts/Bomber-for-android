@@ -56,8 +56,8 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		
 		int score;
 		int level;
-		int bombX, bombY, bombgravity;
-		int planeX, planeY, velocity, planegravity, planestart;
+		float bombX, bombY, bombgravity;
+		float planeX, planeY, velocity, planegravity, planestart;
 		int[] towers;
 		
 		public BomberThread(SurfaceHolder hold, Context c) {
@@ -110,8 +110,8 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 				planeY = planestart;
 				planeX = 0;
 				towers = (int[]) levels[lvl].clone();
-				bombgravity = 2;
-				velocity = 2;
+				bombgravity = 1000 / canvaswidth;
+				velocity = 1000 / canvaswidth;
 				planegravity = unitheight;
 			}
 		}
@@ -135,8 +135,8 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 												bombX + BOMB_RADIUS, canvasheight - bombY - BOMB_RADIUS, bombpaint);
 			}
 			
-			canvas.drawText("Score: " + score, (float) 0, (float) canvasheight, textpaint);
-			canvas.drawText("Level: " + (level + 1), (float) 0, (float) canvasheight - unitheight, textpaint);
+			canvas.drawText("Score: " + score, (float) 0, canvasheight, textpaint);
+			canvas.drawText("Level: " + (level + 1), (float) 0, canvasheight - unitheight, textpaint);
 		}
 		
 		public void update() {
