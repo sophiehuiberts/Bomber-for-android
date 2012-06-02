@@ -171,6 +171,7 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		
 		public void gameover() {
 			Log.i(TAG, "Game over! Score: " + score);
+			score = 0;
 			initlevel(0);
 		}
 		
