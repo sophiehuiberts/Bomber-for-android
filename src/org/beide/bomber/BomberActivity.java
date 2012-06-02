@@ -10,7 +10,7 @@ public class BomberActivity extends Activity {
 	private static final int MENU_RESTART = 1;
 	
 	private BomberView view;
-	private BomberView.BomberThread thread;
+	private BomberThread thread;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
