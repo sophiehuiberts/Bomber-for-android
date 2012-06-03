@@ -1,5 +1,8 @@
 Todo list:
 
+Bugs:
+- Bombs do not fall in landscape mode
+
 Before any release:
 - Improve score/level display
 - Pause/resume
