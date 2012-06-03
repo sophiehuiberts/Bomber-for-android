@@ -11,6 +11,8 @@
 
 package org.beide.bomber;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,6 +30,9 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	
 	public String TAG = "Bomber";
 	
+	Context context;
+	Resources res;
+	
 	int[][] levels = {
 		{0,0,1,2,3,4,5,4,3,2,1,0},
 		{0,5,5,5,5,5,5,5,5,5,5,0},
@@ -44,7 +49,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	
 	SurfaceHolder holder;
 	
-	Paint towerpaint, planepaint, bombpaint, textpaint;
+	Paint textpaint, paint;
+	Bitmap plane, tower, bomb, background;
 	
 	boolean running = true;
 	boolean paused;
@@ -62,20 +68,16 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	float planeX, planeY, velocity, planegravity, planestart;
 	int[] towers;
 	
-	public BomberThread(SurfaceHolder hold) {
+	public BomberThread(SurfaceHolder hold, Context c) {
 		holder = hold;
+		context = c;
 		
-		towerpaint = new Paint();
-		towerpaint.setColor(Color.RED);
-		
-		planepaint = new Paint();
-		planepaint.setColor(Color.BLACK);
-		
-		bombpaint = new Paint();
-		bombpaint.setColor(Color.BLACK);
+		res = c.getResources();
 		
 		textpaint = new Paint();
-		textpaint.setColor(Color.YELLOW);
+		textpaint.setColor(Color.BLACK);
+		
+		paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	}
 	
 	public void setRunning(boolean run) {
@@ -98,6 +100,15 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			bombgravity = canvasheight / 300;
 			velocity = canvaswidth / 200;
 			planegravity = unitheight;
+			
+			plane = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.plane),
+																				unitwidth, (int) unitheight / 2, true);
+			tower = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.tower),
+																				unitwidth, unitheight, true);
+			bomb = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.bomb),
+																			 BOMB_RADIUS, BOMB_RADIUS * 2, true);
+			background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.background),
+																						 width, height, true);
 		}
 	}
 	
@@ -123,26 +134,27 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	}
 	
 	public void draw(Canvas canvas) {
-		canvas.drawColor(Color.BLUE);
+		canvas.drawBitmap(background, (float) 0, (float) 0, paint);
 		
 		// Draw the towers
 		for(int i = 0; i < towers.length; i++) {
-			canvas.drawRect(i * unitwidth, canvasheight - towers[i] * unitheight,
-											(i + 1) * unitwidth, canvasheight, towerpaint);
+			for(int j = 0; j < towers[i]; j++) {
+				canvas.drawBitmap(tower, (float) i * unitwidth,
+													(float) canvasheight - j * unitheight, paint);
+			}
 		}
 		
 		// Draw the plane
-		canvas.drawRect(planeX - unitwidth, canvasheight - planeY + unitheight - 1,
-										planeX, canvasheight - planeY - 1, planepaint);
+		canvas.drawBitmap(plane, planeX - unitwidth,
+											canvasheight - planeY + unitheight / 2, paint);
 		
 		if(bombY > 0) {
 			// Draw the bomb
-			canvas.drawRect(bombX - BOMB_RADIUS, canvasheight - bombY + BOMB_RADIUS,
-											bombX + BOMB_RADIUS, canvasheight - bombY - BOMB_RADIUS, bombpaint);
+			canvas.drawBitmap(bomb, bombX - BOMB_RADIUS, canvasheight - bombY - BOMB_RADIUS, paint);
 		}
 		
-		canvas.drawText("Score: " + score, (float) 0, canvasheight, textpaint);
-		canvas.drawText("Level: " + (level + 1), (float) 0, canvasheight - unitheight, textpaint);
+		canvas.drawText("Score: " + score, (float) 0, 0, textpaint);
+		canvas.drawText("Level: " + (level + 1), (float) 0, unitheight, textpaint);
 	}
 	
 	public void update() {

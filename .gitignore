@@ -9,3 +9,4 @@ bin
 debug.sh
 obj
 .svn
+.directory

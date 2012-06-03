@@ -40,7 +40,7 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
 		
-		thread = new BomberThread(holder);
+		thread = new BomberThread(holder, context);
 		
 		setFocusable(true);
 	}
