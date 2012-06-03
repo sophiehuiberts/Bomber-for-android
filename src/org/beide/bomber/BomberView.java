@@ -28,6 +28,8 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 	BomberThread thread;
 	Context context;
 	
+	boolean threadStarted = false;
+	
 	public BomberThread getThread() {
 		return thread;
 	}
@@ -49,7 +51,18 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		holder.addCallback(this);
 		setOnTouchListener(thread);
 		thread.setRunning(true);
-		thread.start();
+		thread.setPaused(false);
+		
+		if(!threadStarted) {
+			thread.start();
+			threadStarted = true;
+		} else {
+			thread.setRunning(false);
+			thread = new BomberThread(holder, context);
+			thread.setRunning(true);
+			thread.setPaused(false);
+			thread.start();
+		}
 	}
 	
 	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="@string/settings"
+		android:key="category">
+		<EditTextPreference
+		android:key="bombtime"
+			android:title="@string/bombtime_title"
+			android:summary="@string/bombtime_summary"
+			android:dialogTitle="@string/bombtime_dialogtitle"
+			android:dialogMessage="@string/bombtime_dialogmessage"
+				android:defaultValue="250"/>
+		<EditTextPreference
+		android:key="planetime"
+			android:title="@string/planetime_title"
+			android:summary="@string/planetime_summary"
+			android:dialogTitle="@string/planetime_dialogtitle"
+			android:dialogMessage="@string/planetime_dialogmessage"
+				android:defaultValue="200"/>
+	</PreferenceCategory>
+</PreferenceScreen>
