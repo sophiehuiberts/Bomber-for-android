@@ -93,6 +93,9 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			unitwidth = width / UNITS_HORIZONTAL;
 			unitheight = height / UNITS_VERTICAL;
 			planestart = PLANE_START_HEIGHT * unitheight;
+			bombgravity = canvasheight / 300;
+			velocity = canvaswidth / 200;
+			planegravity = unitheight;
 		}
 	}
 	
@@ -163,12 +166,14 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 				gameover();
 			}
 			
+			// If there are towers, return
 			for(int i = 0; i < towers.length; i++) {
 				if(towers[i] > 0) {
 					return;
 				}
 			}
 			
+			// There are no towers, so we will level up
 			initlevel(level + 1);
 		}
 	}
