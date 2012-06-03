@@ -34,7 +34,12 @@ public class BomberActivity extends Activity {
 	
 	public void onResume() {
 		super.onResume();
-		thread.restart();
+		thread.setPaused(false);
+	}
+	
+	public void onPause() {
+		super.onPause();
+		thread.setPaused(true);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
