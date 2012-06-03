@@ -92,6 +92,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			canvaswidth = width;
 			unitwidth = width / UNITS_HORIZONTAL;
 			unitheight = height / UNITS_VERTICAL;
+			Log.v(TAG, "Canvas is " + canvaswidth + "x" + canvasheight);
+			Log.v(TAG, "Units are " + unitwidth + "x" + unitheight);
 			planestart = PLANE_START_HEIGHT * unitheight;
 			bombgravity = canvasheight / 300;
 			velocity = canvaswidth / 200;
