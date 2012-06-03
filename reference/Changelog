@@ -1,0 +1,10 @@
+12/05/2008
+----------
+
+* Initial version of bomber with the following features:
+	- Plane can drop bombs onto buildings.
+	- Player is awarded points for destroying builds.
+	- Level is cleared and new level started when all buildings are destroyed.
+	- A new life is awarded for every 10,000 points.
+	- As the levels increase the plane flys faster and the buildings get higher.
+	- The game can be planed using keys or mouse.
