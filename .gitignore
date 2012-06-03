@@ -8,3 +8,4 @@ bin
 *.kate-swp
 debug.sh
 obj
+.svn
