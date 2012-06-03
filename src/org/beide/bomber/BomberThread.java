@@ -182,7 +182,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 		
 		if(bombY > 0) {
 			// Draw the bomb
-			canvas.drawBitmap(bomb, bombX - BOMB_RADIUS, canvasheight - bombY - 2 * BOMB_RADIUS, paint);
+			canvas.drawBitmap(bomb, bombX - BOMB_RADIUS, canvasheight - bombY + 2 * BOMB_RADIUS, paint);
 		}
 		
 		canvas.drawText(res.getString(R.string.score) + score, (float) 0, unitheight * 2, textpaint);
