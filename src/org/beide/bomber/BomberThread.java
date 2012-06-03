@@ -97,8 +97,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			Log.v(TAG, "Canvas is " + canvaswidth + "x" + canvasheight);
 			Log.v(TAG, "Units are " + unitwidth + "x" + unitheight);
 			planestart = PLANE_START_HEIGHT * unitheight;
-			bombgravity = canvasheight / 300;
-			velocity = canvaswidth / 200;
+			bombgravity = canvasheight / 200;
+			velocity = canvaswidth / 150;
 			planegravity = unitheight;
 			
 			plane = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.plane),
@@ -127,8 +127,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			planeY = planestart;
 			planeX = 0;
 			towers = (int[]) levels[lvl].clone();
-			bombgravity = canvasheight / 300;
-			velocity = canvaswidth / 200;
+			bombgravity = canvasheight / 200;
+			velocity = canvaswidth / 150;
 			planegravity = unitheight;
 		}
 	}
