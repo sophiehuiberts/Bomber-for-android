@@ -70,6 +70,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	
 	int score;
 	int level;
+	int lives;
 	float bombX, bombY, bombgravity, bombspeed;
 	float planeX, planeY, velocity, planegravity, planestart, planespeed;
 	int[] towers;
@@ -105,6 +106,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	public void getSettings() {
 		bombspeed = Float.valueOf(prefs.getString("bombspeed", "0.45"));
 		planespeed = Float.valueOf(prefs.getString("planespeed", "0.45"));
+		lives = Integer.parseInt(prefs.getString("lives", "3"));
 	}
 	
 	
@@ -182,8 +184,9 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			canvas.drawBitmap(bomb, bombX - BOMB_RADIUS, canvasheight - bombY - BOMB_RADIUS, paint);
 		}
 		
-		canvas.drawText(res.getString(R.string.score) + score, (float) 0, unitheight * 2, textpaint);
 		canvas.drawText(res.getString(R.string.level) + level, (float) 0, unitheight, textpaint);
+		canvas.drawText(res.getString(R.string.score) + score, (float) 0, unitheight * 2, textpaint);
+		canvas.drawText(res.getString(R.string.lives) + lives, (float) 0, unitheight * 3, textpaint);
 	}
 	
 	public void update() {
@@ -211,8 +214,15 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 				planeY -= planegravity;
 			}
 			
+			// Oops, we hit a tower
 			if(towers[(int) planeX / unitwidth] * unitheight >= planeY) {
-				gameover();
+				if(--lives >= 0) {
+					planeY = planestart;
+					planeX = 0;
+					bombY = 0;
+				} else {
+					gameover();
+				}
 			}
 			
 			// If there are towers, return
@@ -230,6 +240,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	public void gameover() {
 		Log.i(TAG, "Game over! Score: " + score);
 		score = 0;
+		getSettings();
 		initlevel(0);
 	}
 	

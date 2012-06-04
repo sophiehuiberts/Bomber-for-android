@@ -17,5 +17,12 @@
 		android:dialogTitle="@string/planespeed_dialogtitle"
 		android:dialogMessage="@string/planespeed_dialogmessage"
 			android:defaultValue="0.45"/>
+		<EditTextPreference
+		android:key="lives"
+		android:title="@string/lives_title"
+		android:summary="@string/lives_summary"
+		android:dialogTitle="@string/lives_dialogtitle"
+		android:dialogMessage="@string/lives_dialogmessage"
+			android:defaultValue="3"/>
 	</PreferenceCategory>
 </PreferenceScreen>
