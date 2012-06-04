@@ -58,6 +58,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	boolean running = true;
 	boolean paused;
 	
+	// Dummy values
 	int canvaswidth = 500;
 	int canvasheight = 500;
 	
@@ -65,10 +66,12 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	int unitheight;
 	int unitwidth;
 	
+	long previoustick;
+	
 	int score;
 	int level;
-	float bombX, bombY, bombgravity, bombtime;
-	float planeX, planeY, velocity, planegravity, planestart, planetime;
+	float bombX, bombY, bombgravity, bombspeed;
+	float planeX, planeY, velocity, planegravity, planestart, planespeed;
 	int[] towers;
 	
 	public BomberThread(SurfaceHolder hold, Context c) {
@@ -87,6 +90,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	
 	public void setRunning(boolean run) {
 		running = run;
+		previoustick = System.nanoTime();
 	}
 	
 	public void setPaused(boolean pause) {
@@ -94,20 +98,13 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 		
 		if(pause == false) {
 			getSettings();
+			previoustick = System.nanoTime();
 		}
 	}
 	
-	public void setPlaneTime(int newtime) {
-		planetime = newtime;
-	}
-	
-	public void setBombTime(int newtime) {
-		bombtime = newtime;
-	}
-	
 	public void getSettings() {
-		bombtime = Integer.parseInt(prefs.getString("bombtime", "250"));
-		planetime = Integer.parseInt(prefs.getString("planetime", "200"));
+		bombspeed = Float.valueOf(prefs.getString("bombspeed", "0.45"));
+		planespeed = Float.valueOf(prefs.getString("planespeed", "0.45"));
 	}
 	
 	
@@ -123,8 +120,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			Log.v(TAG, "Units are " + unitwidth + "x" + unitheight);
 			planestart = PLANE_START_HEIGHT * unitheight;
 			
-			bombgravity = canvasheight / bombtime;
-			velocity = canvaswidth / planetime;
+			bombgravity = canvasheight * bombspeed;
+			velocity = canvaswidth * planespeed;
 			planegravity = unitheight;
 			
 			plane = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.plane),
@@ -159,8 +156,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			planeY = planestart;
 			planeX = 0;
 			towers = (int[]) levels[lvl].clone();
-			bombgravity = canvasheight / bombtime;
-			velocity = canvaswidth / planetime;
+			bombgravity = canvasheight * bombspeed;
+			velocity = canvaswidth * planespeed;
 			planegravity = unitheight;
 		}
 	}
@@ -192,8 +189,14 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	public void update() {
 		
 		synchronized(holder) {
+			long tick = System.nanoTime();
+			// Elapsed time is in seconds
+			double elapsedtime = (tick - previoustick)/1000000;
+			elapsedtime /= 1000;
+			previoustick = tick;
+			
 			if(bombY != 0) {
-				bombY -= bombgravity;
+				bombY -= bombgravity * elapsedtime;
 				if(towers[(int) bombX / unitwidth] * unitheight >= bombY || bombY >= canvasheight) {
 					towers[(int) bombX / unitwidth]--;
 					
@@ -202,7 +205,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 				}
 			}
 			
-			planeX += velocity;
+			planeX += velocity * elapsedtime;
 			if(planeX >= canvaswidth) {
 				planeX = 0;
 				planeY -= planegravity;
@@ -215,7 +218,6 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			// If there are towers, return
 			for(int i = 0; i < towers.length; i++) {
 				if(towers[i] > 0) {
-					Log.v(TAG, "Tower " + i + " is " + towers[i] + " high.");
 					return;
 				}
 			}

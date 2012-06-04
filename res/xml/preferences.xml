@@ -4,18 +4,18 @@
 		android:title="@string/settings"
 		android:key="category">
 		<EditTextPreference
-		android:key="bombtime"
-			android:title="@string/bombtime_title"
-			android:summary="@string/bombtime_summary"
-			android:dialogTitle="@string/bombtime_dialogtitle"
-			android:dialogMessage="@string/bombtime_dialogmessage"
-				android:defaultValue="250"/>
+		android:key="bombspeed"
+		android:title="@string/bombspeed_title"
+		android:summary="@string/bombspeed_summary"
+		android:dialogTitle="@string/bombspeed_dialogtitle"
+		android:dialogMessage="@string/bombspeed_dialogmessage"
+			android:defaultValue="0.45"/>
 		<EditTextPreference
-		android:key="planetime"
-			android:title="@string/planetime_title"
-			android:summary="@string/planetime_summary"
-			android:dialogTitle="@string/planetime_dialogtitle"
-			android:dialogMessage="@string/planetime_dialogmessage"
-				android:defaultValue="200"/>
+		android:key="planespeed"
+		android:title="@string/planespeed_title"
+		android:summary="@string/planespeed_summary"
+		android:dialogTitle="@string/planespeed_dialogtitle"
+		android:dialogMessage="@string/planespeed_dialogmessage"
+			android:defaultValue="0.45"/>
 	</PreferenceCategory>
 </PreferenceScreen>

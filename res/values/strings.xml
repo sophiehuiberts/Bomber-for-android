@@ -6,14 +6,12 @@
 	<string name="menu_restart">Restart</string>
 	<string name="menu_settings">Settings</string>
 	<string name="settings">Settings</string>
-	<string name="bombtime_title">Bomb fall time</string>
-	<string name="bombtime_summary">Frames the bomb takes to fall 1 screen</string>
-	<string name="bombtime_dialogtitle">Bomb fall time</string>
-	<string name="bombtime_dialogmessage">The amount of frames it takes the bomb,
-		to fall across the screen</string>
-	<string name="planetime_title">Plane fly time</string>
-	<string name="planetime_summary">Frames the plane takes to fly 1 screen</string>
-	<string name="planetime_dialogtitle">Plane fly time</string>
-	<string name="planetime_dialogmessage">The amount of frames it takes the plane,
-		to fly across the screen.</string>
+	<string name="bombspeed_title">Bomb fall speed</string>
+	<string name="bombspeed_summary">The speed at which the bomb falls.</string>
+	<string name="bombspeed_dialogtitle">Bomb fall speed</string>
+	<string name="bombspeed_dialogmessage">The speed at which the bomb falls.</string>
+	<string name="planespeed_title">Plane fly speed</string>
+	<string name="planespeed_summary">The speed at which the plane flies.</string>
+	<string name="planespeed_dialogtitle">Plane fly speed</string>
+	<string name="planespeed_dialogmessage">The speed at which the plane flies.</string>
 </resources>
