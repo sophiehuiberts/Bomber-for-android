@@ -13,9 +13,11 @@ package org.beide.bomber;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 public class BomberActivity extends Activity {
 	
@@ -30,6 +32,9 @@ public class BomberActivity extends Activity {
 		
 		view = new BomberView(getApplicationContext());
 		thread = view.getThread();
+		
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
 		setContentView(view);
 	}
