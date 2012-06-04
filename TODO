@@ -1,8 +1,5 @@
 Todo list:
 
-Bugs:
-- Bombs do not fall in landscape mode
-
 Before any release:
 - Improve score/level display
 - Function without touchscreen
@@ -17,3 +14,4 @@ Would be nice:
 Fully optional:
 - Compatibility with Bomber's themes
 - Auto-generating levels
+- Bombing famous structures
