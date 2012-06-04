@@ -172,17 +172,17 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 		for(int i = 0; i < towers.length; i++) {
 			for(int j = 0; j < towers[i]; j++) {
 				canvas.drawBitmap(tower, (float) i * unitwidth,
-													(float) canvasheight - j * unitheight, paint);
+													(float) canvasheight - (j + 1) * unitheight, paint);
 			}
 		}
 		
 		// Draw the plane
 		canvas.drawBitmap(plane, planeX - unitwidth,
-											canvasheight - planeY + unitheight, paint);
+											canvasheight - planeY, paint);
 		
 		if(bombY > 0) {
 			// Draw the bomb
-			canvas.drawBitmap(bomb, bombX - BOMB_RADIUS, canvasheight - bombY + 2 * BOMB_RADIUS, paint);
+			canvas.drawBitmap(bomb, bombX - BOMB_RADIUS, canvasheight - bombY - BOMB_RADIUS, paint);
 		}
 		
 		canvas.drawText(res.getString(R.string.score) + score, (float) 0, unitheight * 2, textpaint);
@@ -215,6 +215,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			// If there are towers, return
 			for(int i = 0; i < towers.length; i++) {
 				if(towers[i] > 0) {
+					Log.v(TAG, "Tower " + i + " is " + towers[i] + " high.");
 					return;
 				}
 			}
