@@ -46,7 +46,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	int UNITS_VERTICAL = 18;
 	
 	// Size of bomb
-	int BOMB_RADIUS = 8;
+	int BOMB_RADIUS = 12;
 	
 	int PLANE_START_HEIGHT = 17;
 	
@@ -128,7 +128,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			planegravity = unitheight;
 			
 			plane = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.plane),
-																				(int) (unitwidth * 1.5), (int) (unitheight * 0.75), true);
+																				(int) (unitwidth), (int) (unitheight), true);
 			tower = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.tower),
 																				unitwidth, unitheight, true);
 			bomb = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.bomb),
