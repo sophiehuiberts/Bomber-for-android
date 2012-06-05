@@ -20,6 +20,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -54,6 +55,9 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	SurfaceHolder holder;
 	
 	Paint textpaint, paint;
+	Paint roundrectpaint, bigtextpaint;
+	RectF rect;
+	
 	Bitmap plane, tower, bomb, background;
 	
 	boolean running = true;
@@ -71,7 +75,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	
 	int score;
 	int level;
-	int lives;
+	int lives, maxlives;
 	float bombX, bombY, bombgravity, bombspeed;
 	float planeX, planeY, velocity, planegravity, planestart, planespeed;
 	int[] towers;
@@ -87,6 +91,15 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 		
 		paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		
+		// Colors are from KDE Bomber
+		roundrectpaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		roundrectpaint.setARGB(188, 202, 222, 155);
+		
+		bigtextpaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		bigtextpaint.setTextSize((float) 30);
+		
+		rect = new RectF(unitwidth, unitheight, canvaswidth - unitwidth, canvasheight - unitheight);
+		
 		prefs = PreferenceManager.getDefaultSharedPreferences(c);
 	}
 	
@@ -98,7 +111,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	public void setPaused(boolean pause) {
 		paused = pause;
 		
-		if(pause == false) {
+		if(!pause && paused) {
 			getSettings();
 			previoustick = System.nanoTime();
 		}
@@ -107,7 +120,7 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	public void getSettings() {
 		bombspeed = Float.valueOf(prefs.getString("bombspeed", "0.45"));
 		planespeed = Float.valueOf(prefs.getString("planespeed", "0.45"));
-		lives = Integer.parseInt(prefs.getString("lives", "3"));
+		maxlives = Integer.parseInt(prefs.getString("lives", "3"));
 	}
 	
 	
@@ -134,6 +147,8 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			bomb = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.bomb),
 																			 BOMB_RADIUS * 2, BOMB_RADIUS * 2, true);
 			
+			rect = new RectF(unitwidth, unitheight, canvaswidth - unitwidth, canvasheight - unitheight);
+			
 			if(width > height) {
 				background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.landscape),
 																						 width, height, true);
@@ -154,6 +169,11 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 	public void initlevel(int lvl) {
 		Log.v(TAG, "initing level " + lvl);
 		synchronized(holder) {
+			
+			if(lvl == 0) {
+				lives = maxlives;
+			}
+			
 			level = lvl;
 			bombY = 0;
 			planeY = planestart;
@@ -217,13 +237,14 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			
 			// Oops, we hit a tower
 			if(towers[(int) planeX / unitwidth] * unitheight >= planeY) {
-				if(--lives >= 0) {
-					planeY = planestart;
-					planeX = 0;
-					bombY = 0;
-				} else {
-					gameover();
-				}
+				planeY = planestart;
+				planeX = 0;
+				lives--;
+			}
+			
+			if(lives < 0) {
+				
+				return;
 			}
 			
 			// If there are towers, return
@@ -238,18 +259,42 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 		}
 	}
 	
-	public void gameover() {
+	public void gameover(Canvas canvas) {
 		Log.i(TAG, "Game over! Score: " + score);
+		
+		setPaused(true);
+		
+		int highscore = prefs.getInt("highscore", 0);
+		
+		if(score > highscore) {
+			SharedPreferences.Editor edit = prefs.edit();
+			edit.putInt("highscore", score);
+			edit.commit();
+		}
+		
+		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
+		
+		canvas.drawText(res.getString(R.string.gameover), (float) 100, 100, bigtextpaint);
+		canvas.drawText(res.getString(R.string.highscore) + highscore, (float) 100, 150, textpaint);
+		canvas.drawText(res.getString(R.string.score) + score, (float) 100, 170, textpaint);
+		
 		score = 0;
-		getSettings();
-		initlevel(0);
 	}
 	
 	public boolean onTouch(View v, MotionEvent event) {
-		// If the bomb is available, drop it
-		if(bombY == 0) {
-			bombY = planeY - unitheight;
-			bombX = planeX - (planeX % unitwidth) + unitwidth / 2;
+		if(event.getAction() == MotionEvent.ACTION_DOWN) {
+			
+			if(lives < 0) {
+				initlevel(0);
+				setPaused(false);
+				return true;
+			}
+			
+			// If the bomb is available, drop it
+			if(bombY == 0) {
+				bombY = planeY - unitheight;
+				bombX = planeX - (planeX % unitwidth) + unitwidth / 2;
+			}
 		}
 		
 		return true;
@@ -261,9 +306,21 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			Canvas c = null;
 			try {
 				c = holder.lockCanvas(null);
-				synchronized(holder) {
-					if(!paused) update();
-					draw(c);
+				if(!paused) {
+					synchronized(holder) {
+						if(lives < 0) {
+							draw(c);
+							gameover(c);
+						} else {
+							update();
+							draw(c);
+						}
+					}
+				} else {
+					if(lives < 0) {
+						draw(c);
+						gameover(c);
+					}
 				}
 			} catch(Exception e) {
 				e.printStackTrace();

@@ -2,11 +2,13 @@
 <resources>
 	<string name="app_name">Bomber</string>
 	<string name="score">Score: </string>
+	<string name="highscore">Highscore: </string>
 	<string name="level">Level: </string>
 	<string name="lives">Lives: </string>
-	<string name="menu_restart">Restart</string>
-	<string name="menu_settings">Settings</string>
 	<string name="settings">Settings</string>
+	<string name="gameover">Game Over!</string>
+	<string name="menu_restart">New Game</string>
+	<string name="menu_settings">Settings</string>
 	<string name="bombspeed_title">Bomb fall speed</string>
 	<string name="bombspeed_summary">The speed at which the bomb falls.</string>
 	<string name="bombspeed_dialogtitle">Bomb fall speed</string>

@@ -39,13 +39,14 @@ public class BomberActivity extends Activity {
 		setContentView(view);
 	}
 	
-	public void onResume() {
-		super.onResume();
+	public void onStart() {
+		super.onStart();
 		thread.setPaused(false);
+		view.setFocusable(true);
 	}
 	
-	public void onPause() {
-		super.onPause();
+	public void onStop() {
+		super.onStop();
 		thread.setPaused(true);
 	}
 	
