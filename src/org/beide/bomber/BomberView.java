@@ -50,6 +50,7 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 	public void surfaceCreated(SurfaceHolder holder) {
 		holder.addCallback(this);
 		setOnTouchListener(thread);
+		setOnKeyListener(thread);
 		thread.setRunning(true);
 		thread.setPaused(false);
 		

@@ -29,7 +29,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-public class BomberThread extends Thread implements View.OnTouchListener {
+public class BomberThread extends Thread implements View.OnTouchListener, View.OnKeyListener {
 	
 	public String TAG = "Bomber";
 	
@@ -277,23 +277,43 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 		score = 0;
 	}
 	
+	/**
+	 * Called when BomberView is touched. Dispatches click() on touch down.
+	 */
 	public boolean onTouch(View v, MotionEvent event) {
 		if(event.getAction() == MotionEvent.ACTION_DOWN) {
-			
-			if(lives < 0) {
-				initlevel(0);
-				setPaused(false);
-				return true;
-			}
-			
-			// If the bomb is available, drop it
-			if(bombY == 0) {
-				bombY = planeY - unitheight;
-				bombX = planeX - (planeX % unitwidth) + unitwidth / 2;
-			}
+			click();
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Called when a key is pressed on BomberView. Dispatches click() on button down.
+	 */
+	public boolean onKey(View v, int keyCode, KeyEvent event) {
+		if(event.getAction() == KeyEvent.ACTION_DOWN) {
+			click();
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Called by onTouch and onKey. Continues on gameover and drops bombs.
+	 */
+	public void click() {
+		if(lives < 0) {
+			initlevel(0);
+			setPaused(false);
+			return;
+		}
+		
+		// If the bomb is available, drop it
+		if(bombY == 0) {
+			bombY = planeY - unitheight;
+			bombX = planeX - (planeX % unitwidth) + unitwidth / 2;
+		}
 	}
 	
 	public void run() {
