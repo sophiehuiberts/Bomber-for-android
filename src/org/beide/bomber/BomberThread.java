@@ -149,13 +149,9 @@ public class BomberThread extends Thread implements View.OnTouchListener {
 			
 			rect = new RectF(unitwidth, unitheight, canvaswidth - unitwidth, canvasheight - unitheight);
 			
-			if(width > height) {
-				background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.landscape),
+			background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.landscape),
 																						 width, height, true);
-			} else {
-				background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.portrait),
-																							 width, height, true);
-			}
+			
 		}
 	}
 	
