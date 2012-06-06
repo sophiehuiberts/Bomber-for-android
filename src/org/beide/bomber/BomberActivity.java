@@ -52,6 +52,7 @@ public class BomberActivity extends Activity {
 	
 	public void onOptionsMenuClosed(Menu menu) {
 		thread.setPaused(false);
+		view.setFocusable(true);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
