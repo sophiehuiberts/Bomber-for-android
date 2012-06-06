@@ -41,7 +41,6 @@ public class BomberActivity extends Activity {
 	
 	public void onStart() {
 		super.onStart();
-		thread.setPaused(false);
 		view.setFocusable(true);
 	}
 	

@@ -52,7 +52,6 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		setOnTouchListener(thread);
 		setOnKeyListener(thread);
 		thread.setRunning(true);
-		thread.setPaused(false);
 		
 		if(!threadStarted) {
 			thread.start();

@@ -60,14 +60,14 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	
 	SurfaceHolder holder;
 	
-	Paint textpaint, paint;
-	Paint roundrectpaint, bigtextpaint;
+	Paint smalltextpaint, medtextpaint, bigtextpaint;
+	Paint roundrectpaint, paint;
 	RectF rect;
 	
 	Bitmap plane, tower, bomb, background;
 	
 	boolean running = true;
-	int state = STATE_PLAYING;
+	int state = STATE_NEWGAME;
 	
 	// Dummy values
 	int canvaswidth = 500;
@@ -92,8 +92,17 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		
 		res = c.getResources();
 		
-		textpaint = new Paint();
-		textpaint.setColor(Color.BLACK);
+		smalltextpaint = new Paint();
+		smalltextpaint.setColor(Color.BLACK);
+		smalltextpaint.setTextSize((float) 16);
+		
+		medtextpaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		medtextpaint.setColor(Color.BLACK);
+		medtextpaint.setTextSize((float) 22);
+		
+		bigtextpaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		bigtextpaint.setColor(Color.BLACK);
+		bigtextpaint.setTextSize((float) 38);
 		
 		paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		
@@ -101,9 +110,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		roundrectpaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		roundrectpaint.setARGB(188, 202, 222, 155);
 		
-		bigtextpaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		bigtextpaint.setTextSize((float) 30);
-		
+		// Changes in this line should also be done in its other occurence
 		rect = new RectF(unitwidth, unitheight, canvaswidth - unitwidth, canvasheight - unitheight);
 		
 		prefs = PreferenceManager.getDefaultSharedPreferences(c);
@@ -157,6 +164,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			bomb = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.bomb),
 																			 BOMB_RADIUS * 2, BOMB_RADIUS * 2, true);
 			
+			// Changes in this line should also be done in its other occurence
 			rect = new RectF(unitwidth, unitheight, canvaswidth - unitwidth, canvasheight - unitheight);
 			
 			background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.landscape),
@@ -212,9 +220,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			canvas.drawBitmap(bomb, bombX - BOMB_RADIUS, canvasheight - bombY - BOMB_RADIUS, paint);
 		}
 		
-		canvas.drawText(res.getString(R.string.level) + level, (float) 0, unitheight, textpaint);
-		canvas.drawText(res.getString(R.string.score) + score, (float) 0, unitheight * 2, textpaint);
-		canvas.drawText(res.getString(R.string.lives) + lives, (float) 0, unitheight * 3, textpaint);
+		canvas.drawText(res.getString(R.string.level) + level, (float) 0, unitheight, smalltextpaint);
+		canvas.drawText(res.getString(R.string.score) + score, (float) 0, unitheight * 2, smalltextpaint);
+		canvas.drawText(res.getString(R.string.lives) + lives, (float) 0, unitheight * 3, smalltextpaint);
 	}
 	
 	public void update() {
@@ -273,6 +281,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			
 			// There are no towers, so we will level up
 			initlevel(level + 1);
+			state = STATE_LEVELUP;
 		}
 	}
 	
@@ -281,8 +290,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
 		
 		canvas.drawText(res.getString(R.string.gameover), (float) 100, 100, bigtextpaint);
-		canvas.drawText(res.getString(R.string.highscore) + highscore, (float) 100, 150, textpaint);
-		canvas.drawText(res.getString(R.string.score) + score, (float) 100, 170, textpaint);
+		canvas.drawText(res.getString(R.string.highscore) + highscore, (float) 100, 150, medtextpaint);
+		canvas.drawText(res.getString(R.string.score) + score, (float) 100, 170, medtextpaint);
 	}
 	
 	public void drawnewgame(Canvas canvas) {
@@ -297,9 +306,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
 		
-		canvas.drawText(res.getString(R.string.clearedlevel) + level, (float) 100, 100, textpaint);
-		canvas.drawText(res.getString(R.string.ontolevel) + (level + 1) + highscore, 
-										(float) 100, 150, textpaint);
+		canvas.drawText(res.getString(R.string.clearedlevel) + level, (float) 100, 100, medtextpaint);
+		canvas.drawText(res.getString(R.string.ontolevel) + (level + 1), (float) 100, 150, medtextpaint);
 	}
 	
 	/**
@@ -330,7 +338,10 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	public void click() {
 		if(lives < 0) {
 			initlevel(0);
-			setPaused(false);
+		}
+		
+		if(state != STATE_PLAYING) {
+			state = STATE_PLAYING;
 			return;
 		}
 		
