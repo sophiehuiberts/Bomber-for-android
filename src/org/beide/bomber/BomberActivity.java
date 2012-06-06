@@ -74,6 +74,7 @@ public class BomberActivity extends Activity {
 			case MENU_RESTART:
 				thread.restart();
 				thread.setPaused(false);
+				break;
 			case MENU_SETTINGS:
 				startActivity(new Intent(this, BomberPreferences.class));
 		}
