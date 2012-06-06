@@ -44,13 +44,19 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		{0,9,9,9,9,9,9,9,0,9,9,0,0}
 	};
 	
-	int UNITS_HORIZONTAL = 12;
-	int UNITS_VERTICAL = 18;
+	final static int UNITS_HORIZONTAL = 12;
+	final static int UNITS_VERTICAL = 18;
 	
 	// Size of bomb
-	int BOMB_RADIUS = 12;
+	final static int BOMB_RADIUS = 12;
 	
-	int PLANE_START_HEIGHT = 17;
+	final static int PLANE_START_HEIGHT = 17;
+	
+	final static int STATE_NEWGAME = 0;
+	final static int STATE_PLAYING = 1;
+	final static int STATE_GAMEOVER = 2;
+	final static int STATE_PAUSED = 3;
+	final static int STATE_LEVELUP = 4;
 	
 	SurfaceHolder holder;
 	
@@ -61,7 +67,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	Bitmap plane, tower, bomb, background;
 	
 	boolean running = true;
-	boolean paused;
+	int state = STATE_PLAYING;
 	
 	// Dummy values
 	int canvaswidth = 500;
@@ -73,7 +79,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	
 	long previoustick;
 	
-	int score;
+	int score, highscore;
 	int level;
 	int lives, maxlives;
 	float bombX, bombY, bombgravity, bombspeed;
@@ -109,11 +115,15 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	}
 	
 	public void setPaused(boolean pause) {
-		paused = pause;
 		
-		if(!pause && paused) {
-			getSettings();
+		if(!pause && state == STATE_PAUSED) {
 			previoustick = System.nanoTime();
+		}
+		
+		if(pause) {
+			state = STATE_PAUSED;
+		} else {
+			state = STATE_PLAYING;
 		}
 	}
 	
@@ -168,6 +178,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			
 			if(lvl == 0) {
 				lives = maxlives;
+				score = 0;
 			}
 			
 			level = lvl;
@@ -239,7 +250,17 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			}
 			
 			if(lives < 0) {
+				Log.i(TAG, "Game over! Score: " + score);
 				
+				state = STATE_GAMEOVER;
+				
+				highscore = prefs.getInt("highscore", 0);
+				
+				if(score > highscore) {
+					SharedPreferences.Editor edit = prefs.edit();
+					edit.putInt("highscore", score);
+					edit.commit();
+				}
 				return;
 			}
 			
@@ -255,26 +276,30 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		}
 	}
 	
-	public void gameover(Canvas canvas) {
-		Log.i(TAG, "Game over! Score: " + score);
-		
-		setPaused(true);
-		
-		int highscore = prefs.getInt("highscore", 0);
-		
-		if(score > highscore) {
-			SharedPreferences.Editor edit = prefs.edit();
-			edit.putInt("highscore", score);
-			edit.commit();
-		}
+	public void drawgameover(Canvas canvas) {
 		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
 		
 		canvas.drawText(res.getString(R.string.gameover), (float) 100, 100, bigtextpaint);
 		canvas.drawText(res.getString(R.string.highscore) + highscore, (float) 100, 150, textpaint);
 		canvas.drawText(res.getString(R.string.score) + score, (float) 100, 170, textpaint);
+	}
+	
+	public void drawnewgame(Canvas canvas) {
 		
-		score = 0;
+		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
+		
+		canvas.drawText(res.getString(R.string.welcome), (float) 100, 100, bigtextpaint);
+		canvas.drawText(res.getString(R.string.clicktostart), (float) 100, 200, bigtextpaint);
+	}
+	
+	public void drawlevelup(Canvas canvas) {
+		
+		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
+		
+		canvas.drawText(res.getString(R.string.clearedlevel) + level, (float) 100, 100, textpaint);
+		canvas.drawText(res.getString(R.string.ontolevel) + (level + 1) + highscore, 
+										(float) 100, 150, textpaint);
 	}
 	
 	/**
@@ -321,21 +346,34 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		while(running) {
 			Canvas c = null;
 			try {
-				c = holder.lockCanvas(null);
-				if(!paused) {
-					synchronized(holder) {
-						if(lives < 0) {
-							draw(c);
-							gameover(c);
-						} else {
-							update();
-							draw(c);
-						}
-					}
-				} else {
-					if(lives < 0) {
-						draw(c);
-						gameover(c);
+				synchronized(holder) {
+						c = holder.lockCanvas(null);
+						switch(state) {
+							case STATE_PLAYING:
+								if(lives < 0) {
+									draw(c);
+									drawgameover(c);
+									state = STATE_GAMEOVER;
+								} else {
+									update();
+									draw(c);
+								}
+								break;
+							case STATE_GAMEOVER:
+								draw(c);
+								drawgameover(c);
+								break;
+							case STATE_LEVELUP:
+								draw(c);
+								drawlevelup(c);
+								break;
+							case STATE_NEWGAME:
+								draw(c);
+								drawnewgame(c);
+								break;
+							case STATE_PAUSED:
+								draw(c);
+								break;
 					}
 				}
 			} catch(Exception e) {
