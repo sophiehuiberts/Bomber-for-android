@@ -292,7 +292,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	 * Called when a key is pressed on BomberView. Dispatches click() on button down.
 	 */
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		if(event.getAction() == KeyEvent.ACTION_DOWN) {
+		if(event.getAction() == KeyEvent.ACTION_DOWN && event.getAction() == 0) {
 			click();
 		}
 		
