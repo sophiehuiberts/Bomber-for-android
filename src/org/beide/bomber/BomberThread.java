@@ -250,7 +250,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			
 			planeX += velocity * elapsedtime;
 			if(planeX >= canvaswidth) {
-				planeX = 0;
+				planeX = planeX % canvaswidth;
 				planeY -= planegravity;
 			}
 			
@@ -346,6 +346,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		
 		if(state != STATE_PLAYING) {
 			state = STATE_PLAYING;
+			previoustick = System.nanoTime();
 			return;
 		}
 		
