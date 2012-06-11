@@ -239,8 +239,12 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 				if(towers[(int) bombX / unitwidth] * unitheight >= bombY || bombY >= canvasheight) {
 					towers[(int) bombX / unitwidth]--;
 					
-					score++;
 					bombY = 0;
+					
+					// If something is destroyed, get points
+					if(towers[(int) bombX / unitwidth] > 0) {
+						score++;
+					}
 				}
 			}
 			
