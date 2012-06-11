@@ -130,7 +130,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		if(pause) {
 			state = STATE_PAUSED;
 		} else {
-			state = STATE_PLAYING;
+			if(state == STATE_PAUSED) {
+				state = STATE_PLAYING;
+			}
 		}
 	}
 	
