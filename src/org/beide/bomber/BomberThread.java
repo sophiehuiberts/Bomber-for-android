@@ -262,6 +262,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 				planeY = planestart;
 				planeX = 0;
 				lives--;
+				
+				// Destroy the block we hit
+				towers[(int) planeX / unitwidth]--;
 			}
 			
 			if(lives < 0) {
