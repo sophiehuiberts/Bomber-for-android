@@ -29,6 +29,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import java.util.Random;
+
 public class BomberThread extends Thread implements View.OnTouchListener, View.OnKeyListener {
 	
 	public String TAG = "Bomber";
@@ -37,12 +39,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	Resources res;
 	SharedPreferences prefs;
 	
-	int[][] levels = {
-		{0,0,1,2,3,4,5,4,3,2,1,0,0},
-		{0,5,5,5,5,5,5,5,5,5,5,0,0},
-		{0,9,8,7,6,5,4,3,2,1,0,0,0},
-		{0,9,9,9,9,9,9,9,0,9,9,0,0}
-	};
+	Random random;
 	
 	final static int UNITS_HORIZONTAL = 12;
 	final static int UNITS_VERTICAL = 18;
@@ -89,6 +86,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	public BomberThread(SurfaceHolder hold, Context c) {
 		holder = hold;
 		context = c;
+		
+		random = new Random();
 		
 		res = c.getResources();
 		
@@ -195,11 +194,49 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			bombY = 0;
 			planeY = planestart;
 			planeX = 0;
-			towers = (int[]) levels[lvl].clone();
 			bombgravity = canvasheight * bombspeed;
 			velocity = canvaswidth * planespeed;
 			planegravity = unitheight;
+			
+			towers = levelGen(lvl);
 		}
+	}
+	
+	/**
+	 * Level generator, pretty much identical to the one used in KDE's Bomber.
+	 */
+	public int[] levelGen(int lvl) {
+		// Container
+		int[] generated = new int[UNITS_HORIZONTAL];
+		
+		// Baseline
+		int min = level;
+		int max = level + 3;
+		
+		// Sanitize
+		if(min < 3) {
+			min = 3;
+		}
+		if(max < 5) {
+			max = 5;
+		}
+		
+		// These 2 rules are not in the original game
+		if(max >= PLANE_START_HEIGHT) {
+			max = PLANE_START_HEIGHT - 1;
+		}
+		if(min > max) {
+			min = max;
+		}
+		
+		// Keep the first and last columns open
+		for(int i = 1; i < UNITS_HORIZONTAL - 1; i++) {
+			
+			// The + 1 and - 0.5 are to make the min and max equally probable to the other heights
+			generated[i] = (int) (random.nextFloat() * (max - min + 1) + min - 0.5);
+		}
+		
+		return generated;
 	}
 	
 	public void draw(Canvas canvas) {
