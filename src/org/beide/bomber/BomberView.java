@@ -53,6 +53,8 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 		setOnKeyListener(thread);
 		thread.setRunning(true);
 		
+		setFocusable(true);
+		
 		if(!threadStarted) {
 			thread.start();
 			threadStarted = true;
