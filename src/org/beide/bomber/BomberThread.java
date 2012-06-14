@@ -124,14 +124,11 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		
 		if(!pause && state == STATE_PAUSED) {
 			previoustick = System.nanoTime();
+			state = STATE_PLAYING;
 		}
 		
-		if(pause) {
+		if(pause && state == STATE_PLAYING) {
 			state = STATE_PAUSED;
-		} else {
-			if(state == STATE_PAUSED) {
-				state = STATE_PLAYING;
-			}
 		}
 	}
 	
