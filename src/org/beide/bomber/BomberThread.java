@@ -222,7 +222,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	}
 	
 	/**
-	 * Level generator, pretty much identical to the one used in KDE's Bomber.
+	 * Level generator.
 	 */
 	public int[] levelGen(int lvl) {
 		// Container
