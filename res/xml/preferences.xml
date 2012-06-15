@@ -11,12 +11,19 @@
 		android:dialogMessage="@string/bombspeed_dialogmessage"
 			android:defaultValue="0.45"/>
 		<EditTextPreference
-		android:key="planespeed"
-		android:title="@string/planespeed_title"
-		android:summary="@string/planespeed_summary"
-		android:dialogTitle="@string/planespeed_dialogtitle"
-		android:dialogMessage="@string/planespeed_dialogmessage"
+		android:key="planestartspeed"
+		android:title="@string/planestartspeed_title"
+		android:summary="@string/planestartspeed_summary"
+		android:dialogTitle="@string/planestartspeed_dialogtitle"
+		android:dialogMessage="@string/planestartspeed_dialogmessage"
 			android:defaultValue="0.45"/>
+		<EditTextPreference
+		android:key="planeaccelleration"
+		android:title="@string/planeaccelleration_title"
+		android:summary="@string/planeaccelleration_summary"
+		android:dialogTitle="@string/planeaccelleration_dialogtitle"
+		android:dialogMessage="@string/planeaccelleration_dialogmessage"
+			android:defaultValue="0.0028"/>
 		<EditTextPreference
 		android:key="lives"
 		android:title="@string/lives_title"

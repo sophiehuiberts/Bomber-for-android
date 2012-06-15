@@ -13,14 +13,22 @@
 	<string name="menu_restart">New Game</string>
 	<string name="menu_settings">Settings</string>
 	<string name="settings">Settings</string>
+	
 	<string name="bombspeed_title">Bomb fall speed</string>
 	<string name="bombspeed_summary">The speed at which the bomb falls.</string>
 	<string name="bombspeed_dialogtitle">Bomb fall speed</string>
 	<string name="bombspeed_dialogmessage">The speed at which the bomb falls.</string>
-	<string name="planespeed_title">Plane fly speed</string>
-	<string name="planespeed_summary">The speed at which the plane flies.</string>
-	<string name="planespeed_dialogtitle">Plane fly speed</string>
-	<string name="planespeed_dialogmessage">The speed at which the plane flies.</string>
+	
+	<string name="planestartspeed_title">Plane speed</string>
+	<string name="planestartspeed_summary">The speed at which the plane flies.</string>
+	<string name="planestartspeed_dialogtitle">Plane speed</string>
+	<string name="planestartspeed_dialogmessage">The speed at which the plane flies.</string>
+	
+	<string name="planeaccelleration_title">Plane accelleration</string>
+	<string name="planeaccelleration_summary">The speed increase of the plane per level.</string>
+	<string name="planeaccelleration_dialogtitle">Plane accelleration</string>
+	<string name="planeaccelleration_dialogmessage">The increase in velocity every level.</string>
+	
 	<string name="lives_title">Lives</string>
 	<string name="lives_summary">You can be like a cat!</string>
 	<string name="lives_dialogtitle">Lives</string>

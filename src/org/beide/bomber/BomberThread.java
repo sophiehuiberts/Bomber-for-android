@@ -80,7 +80,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	int level;
 	int lives, maxlives;
 	float bombX, bombY, bombgravity, bombspeed;
-	float planeX, planeY, velocity, planegravity, planestart, planespeed;
+	float planestart, planestartspeed;
+	float planeX, planeY, velocity, planegravity, planespeed, planeaccelleration;
 	int[] towers;
 	
 	public BomberThread(SurfaceHolder hold, Context c) {
@@ -143,7 +144,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	 */
 	public void getSettings() {
 		bombspeed = Float.valueOf(prefs.getString("bombspeed", "0.45"));
-		planespeed = Float.valueOf(prefs.getString("planespeed", "0.45"));
+		planestartspeed = Float.valueOf(prefs.getString("planespeed", "0.45"));
+		planeaccelleration = Float.valueOf(prefs.getString("planeaccelleration", "0.0028"));
 		maxlives = Integer.parseInt(prefs.getString("lives", "3"));
 	}
 	
@@ -202,6 +204,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			if(lvl == 0) {
 				lives = maxlives;
 				score = 0;
+				planespeed = planestartspeed;
+			} else {
+				planespeed += planeaccelleration;
 			}
 			
 			level = lvl;
