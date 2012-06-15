@@ -276,7 +276,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			canvas.drawBitmap(bomb, bombX - BOMB_RADIUS, canvasheight - bombY - BOMB_RADIUS, paint);
 		}
 		
-		canvas.drawText(res.getString(R.string.level) + level, (float) 0, unitheight, smalltextpaint);
+		canvas.drawText(res.getString(R.string.level) + (level + 1), (float) 0, unitheight, smalltextpaint);
 		canvas.drawText(res.getString(R.string.score) + score, (float) 0, unitheight * 2, smalltextpaint);
 		canvas.drawText(res.getString(R.string.lives) + lives, (float) 0, unitheight * 3, smalltextpaint);
 	}
