@@ -115,11 +115,17 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		prefs = PreferenceManager.getDefaultSharedPreferences(c);
 	}
 	
+	/**
+	 * Only has effect when the game is paused or played.
+	 */
 	public void setRunning(boolean run) {
 		running = run;
 		previoustick = System.nanoTime();
 	}
 	
+	/**
+	 * Only has effect when the game is paused or played.
+	 */
 	public void setPaused(boolean pause) {
 		
 		if(!pause && state == STATE_PAUSED) {
@@ -132,13 +138,18 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		}
 	}
 	
+	/**
+	 * Refreshes settings.
+	 */
 	public void getSettings() {
 		bombspeed = Float.valueOf(prefs.getString("bombspeed", "0.45"));
 		planespeed = Float.valueOf(prefs.getString("planespeed", "0.45"));
 		maxlives = Integer.parseInt(prefs.getString("lives", "3"));
 	}
 	
-	
+	/**
+	 * Scales the units appropriately for the screen-size.
+	 */
 	public void surfaceSize(int width, int height) {
 		synchronized(holder) {
 			getSettings();
@@ -171,6 +182,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		}
 	}
 	
+	/**
+	 * Restarts the game.
+	 */
 	public void restart() {
 		synchronized(holder) {
 			score = 0;
@@ -178,6 +192,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		}
 	}
 	
+	/**
+	 * Initializes the level given as parameter.
+	 */
 	public void initlevel(int lvl) {
 		Log.v(TAG, "initing level " + lvl);
 		synchronized(holder) {
@@ -236,6 +253,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		return generated;
 	}
 	
+	/**
+	 * Draws the background, the plane, the bomb and the buildings.
+	 */
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(background, (float) 0, (float) 0, paint);
 		
@@ -261,6 +281,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		canvas.drawText(res.getString(R.string.lives) + lives, (float) 0, unitheight * 3, smalltextpaint);
 	}
 	
+	/**
+	 * Does 1 tick of the game. All the primary game logic.
+	 */
 	public void update() {
 		
 		synchronized(holder) {
@@ -332,6 +355,10 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		}
 	}
 	
+	/**
+	 * Draws the orange rectangle with the "Game Over" text.
+	 * Use this after draw.)
+	 */
 	public void drawgameover(Canvas canvas) {
 		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
@@ -341,6 +368,10 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		canvas.drawText(res.getString(R.string.score) + score, (float) 100, 170, medtextpaint);
 	}
 	
+	/**
+	 * Draws the orange rectangle with the "New Game" text.
+	 * Use this after draw.)
+	 */
 	public void drawnewgame(Canvas canvas) {
 		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
@@ -349,6 +380,10 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		canvas.drawText(res.getString(R.string.clicktostart), (float) 100, 200, bigtextpaint);
 	}
 	
+	/**
+	 * Draws the orange rectangle with the "Level up" text.
+	 * Use this after draw.)
+	 */
 	public void drawlevelup(Canvas canvas) {
 		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
@@ -400,6 +435,9 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		}
 	}
 	
+	/**
+	 * Main loop. Gets the canvas and manages the states.
+	 */
 	public void run() {
 		restart();
 		while(running) {
