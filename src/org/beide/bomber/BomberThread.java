@@ -389,8 +389,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
 		
-		canvas.drawText(res.getString(R.string.clearedlevel) + level, (float) 100, 100, medtextpaint);
-		canvas.drawText(res.getString(R.string.ontolevel) + (level + 1), (float) 100, 150, medtextpaint);
+		canvas.drawText(res.getString(R.string.clearedlevel)  + " " + level, (float) 100, 100, medtextpaint);
+		canvas.drawText(res.getString(R.string.ontolevel) + " " + (level + 1), (float) 100, 150, medtextpaint);
 	}
 	
 	/**
