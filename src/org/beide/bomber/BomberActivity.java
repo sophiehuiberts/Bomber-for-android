@@ -53,6 +53,13 @@ public class BomberActivity extends Activity {
 		thread.setPaused(true);
 	}
 	
+	public boolean onSearchRequested() {
+		
+		thread.click();
+		
+		return true;
+	}
+	
 	public void onOptionsMenuClosed(Menu menu) {
 		thread.setPaused(false);
 		view.setFocusable(true);
