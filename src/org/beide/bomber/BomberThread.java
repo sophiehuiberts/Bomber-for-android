@@ -301,14 +301,15 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			if(bombY != 0) {
 				bombY -= bombgravity * elapsedtime;
 				
+				bombX %= canvaswidth;
+				
 				if(towers[(int) bombX / unitwidth] * unitheight >= bombY || bombY >= canvasheight) {
 					
 					// If something is destroyed, get points
 					if(towers[(int) bombX / unitwidth] > 0) {
 						score++;
+						towers[(int) bombX / unitwidth]--;
 					}
-					
-					towers[(int) bombX / unitwidth]--;
 					
 					bombY = 0;
 				}
