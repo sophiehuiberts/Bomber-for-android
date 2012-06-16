@@ -15,12 +15,26 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 public class BomberPreferences extends PreferenceActivity {
 	public void onCreate(Bundle sii) {
 		super.onCreate(sii);
 		addPreferencesFromResource(R.xml.preferences);
+		
+		Preference r = (Preference) findPreference("reset");
+		
+		r.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			public boolean onPreferenceClick(Preference preference) {
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				SharedPreferences.Editor edit = prefs.edit();
+				edit.putInt("highscore", 0);
+				edit.commit();
+				return true;
+			}
+		});
 	}
 }

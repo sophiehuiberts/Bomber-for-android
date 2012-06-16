@@ -33,4 +33,7 @@
 	<string name="lives_summary">You can be like a cat!</string>
 	<string name="lives_dialogtitle">Lives</string>
 	<string name="lives_dialogmessage">Amount of lives you start a game with.</string>
+	
+	<string name="reset_title">Reset highscore</string>
+	<string name="reset_summary">Be careful! This button does exactly what it says it does.</string>
 </resources>

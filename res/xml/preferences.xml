@@ -31,5 +31,9 @@
 		android:dialogTitle="@string/lives_dialogtitle"
 		android:dialogMessage="@string/lives_dialogmessage"
 			android:defaultValue="3"/>
+		<Preference
+		android:title="@string/reset_title"
+		android:summary="@string/reset_summary"
+			android:key="reset" />
 	</PreferenceCategory>
 </PreferenceScreen>
