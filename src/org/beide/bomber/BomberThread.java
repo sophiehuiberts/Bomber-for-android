@@ -301,7 +301,6 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			if(bombY != 0) {
 				bombY -= bombgravity * elapsedtime;
 				
-				bombX %= canvaswidth;
 				
 				if(towers[(int) bombX / unitwidth] * unitheight >= bombY || bombY >= canvasheight) {
 					
@@ -439,6 +438,10 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		if(bombY == 0) {
 			bombY = planeY - unitheight;
 			bombX = planeX;
+			if(bombX >= canvaswidth - BOMB_RADIUS)
+				bombX = canvaswidth - BOMB_RADIUS - 1;
+			if(bombX <= BOMB_RADIUS)
+				bombX = BOMB_RADIUS + 1;
 		}
 	}
 	
