@@ -69,7 +69,7 @@ public class BomberActivity extends Activity {
 		super.onCreateOptionsMenu(menu);
 		
 		menu.add(0, MENU_RESTART, 1, R.string.menu_restart);
-		menu.add(0, MENU_SETTINGS, 1, R.string.menu_settings);
+		//menu.add(0, MENU_SETTINGS, 1, R.string.menu_settings);
 		
 		return true;
 	}
