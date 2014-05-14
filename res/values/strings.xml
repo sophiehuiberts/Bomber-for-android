@@ -24,9 +24,9 @@
 	<string name="planestartspeed_dialogtitle">Plane speed</string>
 	<string name="planestartspeed_dialogmessage">The speed at which the plane flies.</string>
 	
-	<string name="planeaccelleration_title">Plane accelleration</string>
+	<string name="planeaccelleration_title">Plane acceleration</string>
 	<string name="planeaccelleration_summary">The speed increase of the plane per level.</string>
-	<string name="planeaccelleration_dialogtitle">Plane accelleration</string>
+	<string name="planeaccelleration_dialogtitle">Plane acceleration</string>
 	<string name="planeaccelleration_dialogmessage">The increase in velocity every level.</string>
 	
 	<string name="lives_title">Lives</string>

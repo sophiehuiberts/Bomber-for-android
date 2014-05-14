@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Bomber</string>
+	<string name="score">Score : </string>
+	<string name="highscore">Meilleur score : </string>
+	<string name="level">Niveau : </string>
+	<string name="lives">Vies : </string>
+	<string name="gameover">Game Over !</string>
+	<string name="welcome">Bienvenue sur Bomber</string>
+	<string name="clicktostart">Cliquez pour démarrer le jeu</string>
+	<string name="clearedlevel">Vous avez fini le niveau avec succès</string>
+	<string name="ontolevel">On to level</string>
+	<string name="menu_restart">Nouvelle partie</string>
+	<string name="menu_settings">Paramètres</string>
+	<string name="settings">Paramètres</string>
+	
+	<string name="bombspeed_title">Vitesse de la chute de la bombe</string>
+	<string name="bombspeed_summary">La vitesse à laquelle la bombe tombe.</string>
+	<string name="bombspeed_dialogtitle">Vitesse de la chute de la bombe</string>
+	<string name="bombspeed_dialogmessage">La vitesse à laquelle la bombe tombe.</string>
+	
+	<string name="planestartspeed_title">Vitesse de l\'avion</string>
+	<string name="planestartspeed_summary">La vitesse à laquelle l\'avion vole.</string>
+	<string name="planestartspeed_dialogtitle">Vitesse de l\'avion</string>
+	<string name="planestartspeed_dialogmessage">La vitesse à laquelle l\'avion vole.</string>
+	
+	<string name="planeaccelleration_title">Accélération de l\'avion</string>
+	<string name="planeaccelleration_summary">L\'augmentation de la vitesse de l\'avion à chaque niveau.</string>
+	<string name="planeaccelleration_dialogtitle">Accélération de l\'avion</string>
+	<string name="planeaccelleration_dialogmessage">L\'augmentation de la vitesse de l\'avion à chaque niveau.</string>
+	
+	<string name="lives_title">Vies</string>
+	<string name="lives_summary">Vous pouvez être comme un chat !</string>
+	<string name="lives_dialogtitle">Vies</string>
+	<string name="lives_dialogmessage">Nombre de vies avec lequel vous commencez la partie.</string>
+	
+	<string name="reset_title">Remettre à zéro le meilleur score</string>
+	<string name="reset_summary">Soyez prudent ! Ce bouton fait exactement ce qu\'il dit qu\'il fait.</string>
+</resources>
