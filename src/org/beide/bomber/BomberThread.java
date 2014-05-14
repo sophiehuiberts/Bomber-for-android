@@ -85,8 +85,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	int[] towers;
 	
 	public BomberThread(SurfaceHolder hold, Context c) {
-		holder = hold;
-		context = c;
+		this.holder = hold;
+		this.context = c;
 		
 		random = new Random();
 		
@@ -180,7 +180,6 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			
 			background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.landscape),
 																						 width, height, true);
-			
 		}
 	}
 	
@@ -200,7 +199,6 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	public void initlevel(int lvl) {
 		Log.v(TAG, "initing level " + lvl);
 		synchronized(holder) {
-			
 			if(lvl == 0) {
 				lives = maxlives;
 				score = 0;
@@ -209,7 +207,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 				planespeed += planeaccelleration;
 			}
 			
-			level = lvl;
+			this.level = lvl;
 			bombY = 0;
 			planeY = planestart;
 			planeX = 0;
@@ -223,6 +221,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	
 	/**
 	 * Level generator.
+	 * @param int level
+	 * @return int[]
 	 */
 	public int[] levelGen(int lvl) {
 		// Container
@@ -265,8 +265,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 		canvas.drawBitmap(background, (float) 0, (float) 0, paint);
 		
 		// Draw the towers
-		for(int i = 0; i < towers.length; i++) {
-			for(int j = 0; j < towers[i]; j++) {
+		for(int i = 0; i < towers.length; ++i) {
+			for(int j = 0; j < towers[i]; ++j) {
 				canvas.drawBitmap(tower, (float) i * unitwidth,
 													(float) canvasheight - (j + 1) * unitheight, paint);
 			}
@@ -290,7 +290,6 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	 * Does 1 tick of the game. All the primary game logic.
 	 */
 	public void update() {
-		
 		synchronized(holder) {
 			long tick = System.nanoTime();
 			// Elapsed time is in seconds
@@ -306,8 +305,8 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 					
 					// If something is destroyed, get points
 					if(towers[(int) bombX / unitwidth] > 0) {
-						score++;
-						towers[(int) bombX / unitwidth]--;
+						++score;
+						--towers[(int) bombX / unitwidth];
 					}
 					
 					bombY = 0;
@@ -323,10 +322,10 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			// Oops, we hit a tower
 			if(towers[(int) planeX / unitwidth] * unitheight >= planeY) {
 				// Lose 1 live
-				lives--;
+				--lives;
 				
 				// Destroy the block we hit
-				towers[(int) planeX / unitwidth]--;
+				--towers[(int) planeX / unitwidth];
 				
 				// Reset plane to start-position
 				planeY = planestart;
@@ -349,7 +348,7 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 			}
 			
 			// If there are towers, return
-			for(int i = 0; i < towers.length; i++) {
+			for(int i = 0; i < towers.length; ++i) {
 				if(towers[i] > 0) {
 					return;
 				}
@@ -366,7 +365,6 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	 * Use this after draw.)
 	 */
 	public void drawgameover(Canvas canvas) {
-		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
 		
 		canvas.drawText(res.getString(R.string.gameover), (float) 100, 100, bigtextpaint);
@@ -379,7 +377,6 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	 * Use this after draw.)
 	 */
 	public void drawnewgame(Canvas canvas) {
-		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
 		
 		canvas.drawText(res.getString(R.string.welcome), (float) 100, 100, bigtextpaint);
@@ -391,7 +388,6 @@ public class BomberThread extends Thread implements View.OnTouchListener, View.O
 	 * Use this after draw.)
 	 */
 	public void drawlevelup(Canvas canvas) {
-		
 		canvas.drawRoundRect(rect, (float) unitheight, (float) unitheight, roundrectpaint);
 		
 		canvas.drawText(res.getString(R.string.clearedlevel)  + " " + level, (float) 100, 100, medtextpaint);
