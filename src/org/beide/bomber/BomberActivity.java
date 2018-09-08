@@ -1,5 +1,5 @@
 /*
- * Copyright (C) Sophie Huiberts <itissohardtothinkofagoodemail@gmail.com> 2012
+ * Copyright (C) Sophie Huiberts 2012
  * 
  * Licensed under the GPL v3
  * 
