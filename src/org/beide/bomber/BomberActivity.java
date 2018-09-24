@@ -54,9 +54,7 @@ public class BomberActivity extends Activity {
 	}
 	
 	public boolean onSearchRequested() {
-		
-		thread.click();
-		
+		this.thread.click();
 		return true;
 	}
 	

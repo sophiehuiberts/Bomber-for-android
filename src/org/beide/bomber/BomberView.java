@@ -31,18 +31,18 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 	boolean threadStarted = false;
 	
 	public BomberThread getThread() {
-		return thread;
+		return this.thread;
 	}
 	
 	public BomberView(Context c) {
 		super(c);
 		
-		context = c;
+		this.context = c;
 		
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
 		
-		thread = new BomberThread(holder, context);
+		this.thread = new BomberThread(holder, context);
 		
 		setFocusable(true);
 	}
@@ -68,12 +68,12 @@ public class BomberView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 	
 	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-		thread.surfaceSize(w, h);
+		this.thread.surfaceSize(w, h);
 	}
 	
 	
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		thread.setRunning(false);
+		this.thread.setRunning(false);
 		
 		// Bad things will happen without this
 		boolean retry = true;
